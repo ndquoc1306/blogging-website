@@ -14,14 +14,16 @@
         {% for blog in blogs %}
         <div class="col-sm-4 mb-4">
           <div class="card">
-            <div class="card-header">
-                <h5 class="card-text">{{ blog.title }}</h5>
+            <div class="card-header" style="text-align: center; >
+                <h5 class="card-text">{{ blog.TITLE }}</h5>
             </div>
             <div class="card-body">
-              <p class="card-text">First Published : {{blog.created_at.strftime('%Y-%m-%d')}}</p>
-              <small class="card-text text-muted">Content : {{blog.content[:60]}}...</small>
-              <br>
-              <a href="/blog/{{blog.id}}" class="btn btn-outline-success">Read more</a>
+                    <p class="card-text">First Published : {{blog.CREATED_AT.strftime('%Y-%m-%d')}}</p>
+                    <small class="card-text text-muted">Content : {{blog.CONTENT[:60]}}...</small>
+                    <br>
+               <div class="card-body-btn">
+                 <a href="/blog/{{blog.ID}}" class="btn btn-outline-success">Read more</a>
+               </div>
             </div>
           </div>
         </div>

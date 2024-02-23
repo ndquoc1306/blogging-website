@@ -7,10 +7,10 @@ from core.hashing import Hasher
 
 def create_new_user(user: CreateUser, db: Session):
     user = User(
-        email=user.email,
-        password=Hasher.get_hashed_password(user.password),
-        is_superadmin=False,
-        is_active=True,
+        EMAIL=user.email,
+        PASSWORD=Hasher.get_hashed_password(user.password),
+        IS_SUPERADMIN=False,
+        IS_ACTIVE=True,
     )
 
     db.add(user)
@@ -20,4 +20,4 @@ def create_new_user(user: CreateUser, db: Session):
 
 
 def get_user(email: str, db: Session):
-    return db.query(User).filter(User.email == email).first()
+    return db.query(User).filter(User.EMAIL == email).first()

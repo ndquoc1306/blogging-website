@@ -5,7 +5,7 @@ from sqlalchemy.orm import Session
 from fastapi.security.utils import get_authorization_scheme_param
 
 from db.session import get_db
-from db.repository.blog import list_blogs, retreive_blog, delete_a_blog
+from db.repository.blog import list_blogs, retrieve_blog, delete_a_blog
 
 # from db.models.blog import Blog
 from res_models.blog import CreateBlog
@@ -31,7 +31,7 @@ def create_blog(request: Request):
 
 @router.get("/blog/{id}")
 def blog_detail(request: Request, id: int, db: Session = Depends(get_db)):
-    blog = retreive_blog(id=id, db=db)
+    blog = retrieve_blog(id=id, db=db)
     return templates.TemplateResponse(
         "blog/detail.html", {"request": request, "blog": blog}
     )
@@ -46,23 +46,23 @@ def create_blog(
 ):
     token = request.cookies.get("access_token")
     _, token = get_authorization_scheme_param(token)
-    try:
-        author = get_current_user(token=token, db=db)
-        blog = CreateBlog(title=title, content=content)
-        blog = create_new_blog(
-            blog=blog,
-            db=db,
-            author_id=author.id,
-        )
-        return responses.RedirectResponse(
-            "/blog?alert=Blog Submitted For Review", status_code=status.HTTP_302_FOUND
-        )
-    except Exception as e:
-        errors = ["Please Log in to Create New Blog"]
-        return templates.TemplateResponse(
-            "blog/create_blog.html",
-            {"request": request, "errors": errors, "title": title, "content": content},
-        )
+    # try:
+    author = get_current_user(token=token, db=db)
+    blog = CreateBlog(TITLE=title, CONTENT=content)
+    blog = create_new_blog(
+        blog=blog,
+        db=db,
+        author_id=author.ID,
+    )
+    return responses.RedirectResponse(
+        "/blog?alert=Blog Submitted For Review", status_code=status.HTTP_302_FOUND
+    )
+# except Exception as e:
+#     errors = ["Please Log in to Create New Blog"]
+#     return templates.TemplateResponse(
+#         "blog/create_blog.html",
+#         {"request": request, "errors": errors, "title": title, "content": content},
+#     )
 
 
 @router.get("/blog/delete/{id}")
@@ -70,16 +70,16 @@ def delete_blog(request: Request, id: int, db: Session = Depends(get_db)):
     token = request.cookies.get("access_token")
     _, token = get_authorization_scheme_param(token)
 
-    try:
-        author = get_current_user(token=token, db=db)
-        msg = delete_a_blog(id=id, author_id=author.id, db=db)
-        alert = msg.get("msg") or msg.get("error")
-        return responses.RedirectResponse(
-            f"/blog?alert={alert}", status_code=status.HTTP_302_FOUND
-        )
-    except Exception as e:
-        blog = retreive_blog(id=id, db=db)
-        return templates.TemplateResponse(
-            "blog/detail.html",
-            {"request": request, "alert": "Please Login again", "blog": blog},
-        )
+    # try:
+    author = get_current_user(token=token, db=db)
+    msg = delete_a_blog(id=id, author_id=author.ID, db=db)
+    alert = msg.get("msg") or msg.get("error")
+    return responses.RedirectResponse(
+        f"/blog?alert={alert}", status_code=status.HTTP_302_FOUND
+    )
+# except Exception as e:
+#     blog = retrieve_blog(id=id, db=db)
+#     return templates.TemplateResponse(
+#         "blog/detail.html",
+#         {"request": request, "alert": "Please Login again", "blog": blog},
+#     )

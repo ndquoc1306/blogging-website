@@ -1,19 +1,21 @@
 from datetime import datetime
 from sqlalchemy import Column, Integer, String, Boolean, Text, ForeignKey, DateTime
 from sqlalchemy.orm import relationship
+from db.models.user import User
 
 from db.base_model import Base
 
 
 class Blog(Base):
-    __tablename__ = "blog"
-    id = Column(Integer, primary_key=True)
-    title = Column(String, nullable=False)
-    slug = Column(String, nullable=False)
-    content = Column(Text, nullable=True)
+    __tablename__ = "BLOG"
+    __table_args__ = ({'schema': 'C##BLOGWEBSITE'})
+    ID = Column(Integer, primary_key=True, autoincrement=True)
+    TITLE = Column(String, nullable=False)
+    SLUG = Column(String, nullable=False)
+    CONTENT = Column(Text, nullable=True)
 
-    author_id = Column(Integer, ForeignKey("user.id"))
-    author = relationship("User", back_populates="blogs")
+    AUTHOR_ID = Column(Integer, ForeignKey(User.ID))
+    # author = relationship("User", backref="BLOGS")
 
-    created_at = Column(DateTime, default=datetime.now())
-    is_acvite = Column(Boolean, default=True)
+    CREATED_AT = Column(DateTime, default=datetime.now())
+    IS_ACTIVE = Column(Boolean, default=True)

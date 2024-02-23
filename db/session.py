@@ -7,20 +7,18 @@ from sqlalchemy.orm import sessionmaker
 from typing import Generator
 from sqlalchemy.engine.url import URL
 
-connect_url = "sqlite:///./sql_app.db"
-# connect_url = "oracle+cx_oracle://quoc:quoc@localhost:1521/QUOC"
+# SQLite connection
+# connect_url = "sqlite:///./sql_app.db"
 
-# connect_url = URL(
-#     "oracle+cx_oracle",
-#     username="quoc",
-#     password="quoc",
-#     host="localhost",
-#     port="1251",
-#     database="QUOC"
-# )
+# Oracle Connection
 
+username = "sys"
+password = "123456"
+host = "localhost"
+port = "1251"
+sid = "ORCLCDB"
+engine = create_engine(f"oracle+cx_oracle://{username}:{password}@(DESCRIPTION = (LOAD_BALANCE=on) (FAILOVER=ON) (ADDRESS = (PROTOCOL = TCP)(HOST = {host})(PORT = 1521)) (CONNECT_DATA = (SERVER = DEDICATED) (SID = {sid})))?encoding=UTF-8&nencoding=UTF-8&mode=SYSDBA&events=true")
 
-engine = create_engine(connect_url, connect_args={"check_same_thread": False})
 SessionLocal = sessionmaker(bind=engine, autoflush=False, autocommit=False)
 
 Base = declarative_base()

@@ -26,10 +26,12 @@ def config_staticfiles(app: FastAPI):
 
 def start_app():
     app = FastAPI(title=setting.APP_TITLE, version=setting.APP_VERSION)
-    create_tables()
+    # create_tables()
     include_routes(app)
     config_staticfiles(app)
     return app
+
+
 
 
 templates = Jinja2Templates(directory="templates")

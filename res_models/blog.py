@@ -3,12 +3,12 @@ from typing import Optional
 
 
 class CreateBlog(BaseModel):
-    title: str
-    slug: str
-    content: Optional[str] = None
+    TITLE: str
+    SLUG: str
+    CONTENT: Optional[str] = None
 
     @root_validator(pre=True)
     def generate_slug(cls, values):
-        if 'title' in values:
-            values["slug"] = values.get("title").replace(" ", "-").lower()
+        if 'TITLE' in values:
+            values["SLUG"] = values.get("TITLE").replace(" ", "-").lower()
         return values

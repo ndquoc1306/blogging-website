@@ -1,0 +1,127 @@
+{% extends "base.html" %}
+
+{% block title %}
+<title>List Users</title>
+{% endblock %}
+
+
+{% block content %}
+<div class="container">
+    <h2 class="text-muted">All Users</h2>
+    <div class="row justify-content-center">
+        {% for user in users %}
+        <div class="card">
+            <h2>{{ user.EMAIL }}</h2>
+            <button class="btn" onclick="openModal('{{ user.EMAIL }}')">Subscribe</button>
+            <div id="myModal-{{ user.EMAIL }}" class="modal">
+                <form method="POST" action="/auth/subscribe/" id="myForm-{{ user.EMAIL }}">
+                    <div class="modal-content">
+                        <div>
+                            <span class="close" onclick="closeModal('{{ user.EMAIL }}')">&times;</span>
+                        </div>
+                        <h2>Input your email to receive notification from {{ user.EMAIL }}: </h2>
+                        <input type="email" id="emailInput" placeholder="Input your email: " name="email">
+                        <br>
+                        <input type="email" class="input-group-text" placeholder="User: " name="user" value="{{ user.EMAIL }}">
+                        <br><br>
+                        <button id="submitBtn" type="submit">Confirm</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+<script>
+    function openModal(username) {
+        var modal = document.getElementById("myModal-" + username);
+        modal.style.display = "block";
+    }
+
+    function closeModal(username) {
+        var modal = document.getElementById("myModal-" + username);
+        modal.style.display = "none";
+    }
+</script>
+
+<style>
+
+    .card {
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        padding: 10px;
+        margin: 10px;
+        width: 400px;
+        box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+    }
+
+    .card h2 {
+        text-align: center;
+        font-size: 20px;
+        font-weight: bold;
+    }
+
+    .btn {
+        background-color: #000000;
+        border: none;
+        color: white;
+        padding: 10px 20px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 20px;
+        margin: 4px 2px;
+        cursor: pointer;
+        border-radius: 5px;
+        font-weight: bold;
+    }
+
+    .btn:hover {
+        background-color: #ff3d4a;
+    }
+
+    .modal-content {
+        background-color: #fefefe;
+        margin: 15% auto;
+        padding: 20px;
+        border: 1px solid #888;
+        width: 40%;
+        max-width: 500px;
+    }
+
+    .modal-content h2 {
+        text-align: center;
+    }
+
+    input#emailInput {
+    margin: 10px 0;
+    padding: 10px 15px;
+    font-weight: bold;
+    }
+
+    button#submitBtn {
+        border: none;
+        padding: 12px;
+        border-radius: 10px;
+        font-size: 18px;
+    }
+
+    .close {
+        color: #aaa;
+        float: right;
+        font-size: 28px;
+        font-weight: bold;
+        text-align: end;
+    }
+
+    .close:hover,
+    .close:focus {
+        color: black;
+        text-decoration: none;
+        cursor: pointer;
+    }
+
+</style>
+
+{% endblock %}
+
